@@ -18,7 +18,25 @@ class MyTopo( Topo ):
 
         # Initialize topology
         Topo.__init__( self )
+        
+        # Add hosts and switches
+        leftHost = self.addHost( 'c1' )
+        rightHost = self.addHost( 's1' )
+        leftHost2 = self.addHost( 'c2' )
+        leftHost3 = self.addHost( 'c3' )
+        leftSwitch = self.addSwitch( 'sw1' )
+        rightSwitch = self.addSwitch( 'sw2' )
 
+        # Add links
+        self.addLink( leftHost, leftSwitch )
+        self.addLink( leftSwitch, rightSwitch )
+        self.addLink( rightSwitch, rightHost )
+        self.addLink( leftHost2, leftSwitch )
+        self.addLink( leftHost3, leftSwitch )
+
+topos = { 'mytopo': ( lambda: MyTopo() ) }
+
+"""
         # Add hosts and switches
         leftHost = self.addHost( 'h1' )
         rightHost = self.addHost( 'h2' )
@@ -28,10 +46,9 @@ class MyTopo( Topo ):
         # Add links
         self.addLink( leftHost, leftSwitch )
         self.addLink( leftSwitch, rightSwitch )
-        self.addLink( rightSwitch, rightHost )
+        self.addLink( rightSwitch, rightHost )"""
 
 
-topos = { 'mytopo': ( lambda: MyTopo() ) }
 
 """Custom topology example
 
@@ -55,19 +72,19 @@ class MyTopo( Topo ):
         Topo.__init__( self ):      # There was a missing ':'
 
         # Add hosts and switches
-        leftHost = self.addHost( 'h1' )     # 'c1'
-        rightHost = self.addHost( 'h2' )    # 's1'
-      #  leftHost2 = self.addHost( 'c2' )
-	  #  leftHost3 = self.addHost( 'c3' )
-		leftSwitch = self.addSwitch( 's3' )    # 'sw1'
-        rightSwitch = self.addSwitch( 's4' )   # 'sw2'
+        leftHost = self.addHost( 'C1' )
+        rightHost = self.addHost( 'S1' )
+        leftHost2 = self.addHost( 'C2' )
+	    leftHost3 = self.addHost( 'C3' )
+		leftSwitch = self.addSwitch( 'SW1' )
+        rightSwitch = self.addSwitch( 'SW2' )
 
         # Add links
         self.addLink( leftHost, leftSwitch )
         self.addLink( leftSwitch, rightSwitch )
         self.addLink( rightSwitch, rightHost )
-    # self.addLink( leftHost2, leftSwitch)
-    # self.addLink( leftHost3, leftSwitch)
+		self.addLink( leftHost2, leftSwitch)
+		self.addLink( leftHost3, leftSwitch)
 
 topos = { 'mytopo': ( lambda: MyTopo() ) }
 """
