@@ -9,6 +9,7 @@ PORT = 5095 	#Arbitrary non-privlidged port
 
 #Creates socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 print ('Socket Created')
 
 try:	#binds a socket to a particular port

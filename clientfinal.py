@@ -17,7 +17,7 @@ except socket.error as msg:
     sys.exit()
 print('Socket Created')
 
-host = 'www.google.com'; #
+host = '10.0.0.4' #'www.google.com'; #
 #host = 'en.wikipedia.org/wiki/Christopher';
 port = 80   #port to connect to ip address of remote host/system
 try:    #retrieves remote server host ip address and assigns it
