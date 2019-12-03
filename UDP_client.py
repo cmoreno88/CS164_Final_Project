@@ -20,7 +20,7 @@ except socket.error:
 	print 'Failed to create socket'
 	sys.exit()
 
-host = 'localhost';
+host = '10.0.0.4'#'localhost';
 port = 8888;
 seqnum = 0  # sequence number
 
