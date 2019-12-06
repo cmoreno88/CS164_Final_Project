@@ -2,7 +2,7 @@
 	Simple udp socket server
 	reciever
 '''
-
+#originally UDP altered to implement RDT 3.0
 import socket
 import sys
 from check import ip_checksum
@@ -11,6 +11,8 @@ import time
 HOST = ''	# Symbolic name meaning all available interfaces
 PORT = 8888	# Arbitrary non-privileged port
 acknum = 0	# Created for acknowledgement number
+users = dict({'ryan':'bently','christopher':'charlie','marcus':'shakes','jacob':'chopper'})
+
 
 # Datagram (udp) socket
 try :
@@ -32,7 +34,7 @@ print 'Socket bind complete'
 
 #now keep talking with the client
 while 1:
-	print 'loop check'						# receive data from client (data, addr)
+#	print 'loop check'						# receive data from client (data, addr)
 	d = s.recvfrom(1024)		# Need to pull the seqnum and the checksum value
 	data = d[0]
 	addr = d[1]

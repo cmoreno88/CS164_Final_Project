@@ -3,6 +3,7 @@
 	Silver Moon
 	sender
 '''
+#originally UDP altered to implement RDT 3.0
 # https://www.programiz.com/python-programming/time
 # https://www.geeksforgeeks.org/time-functions-in-python-set-1-time-ctime-sleep/
 import socket	#for sockets
@@ -20,7 +21,8 @@ except socket.error:
 	print 'Failed to create socket'
 	sys.exit()
 
-host = '10.0.0.4'#'localhost';
+# host = '10.0.0.4'
+host = 'localhost';
 port = 8888;
 seqnum = 0  # sequence number
 
