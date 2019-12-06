@@ -1,6 +1,7 @@
 '''
 	Simple udp socket server
 	reciever
+	https://www.binarytides.com/programming-udp-sockets-in-python/
 '''
 #originally UDP altered to implement RDT 3.0
 import socket
@@ -10,9 +11,8 @@ import time
 
 HOST = ''	# Symbolic name meaning all available interfaces
 PORT = 8888	# Arbitrary non-privileged port
-acknum = 0	# Created for acknowledgement number
+# acknum = 0	# Created for acknowledgement number
 users = dict({'ryan':'bently','christopher':'charlie','marcus':'shakes','jacob':'chopper'})
-
 
 # Datagram (udp) socket
 try :
@@ -38,22 +38,23 @@ while 1:
 	d = s.recvfrom(1024)		# Need to pull the seqnum and the checksum value
 	data = d[0]
 	addr = d[1]
-	seqnum = data[0]
-	chks = data[1:3]
-	rchks = str(ip_checksum(data[3:]))
+	# seqnum = data[0]
+	# chks = data[1:3]
+	# rchks = str(ip_checksum(data[3:]))
 	
 	if not data: 
 		break
-	elif (seqnum == str(acknum)) and (chks == rchks):		#verify seqnum/acknum and seqnum If good flip values
-		data = 'serverAck and Sum Good'
-		reply = (str(acknum) + str(ip_checksum(data)) + data)
-		if acknum == 0:
-			acknum = 1
-		else:
-			acknum = 0
-	else:
-		data = 'serverAck and Sum Bad'
-		reply = (str(acknum) + str(ip_checksum(data)) + data)
+	# elif (seqnum == str(acknum)) and (chks == rchks):		#verify seqnum/acknum and seqnum If good flip values
+	#	data = 'serverAck and Sum Good'
+	#	reply = (str(acknum) + str(ip_checksum(data)) + data)
+	#	if acknum == 0:
+	#		acknum = 1
+	#	else:
+	#		acknum = 0
+	#else:
+	#	data = 'serverAck and Sum Bad'
+	#	reply = (str(acknum) + str(ip_checksum(data)) + data)
+	reply = 'ok...' + data
 	s.sendto(reply , addr)
 	# MAY need to move this assignment
 	print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + data.strip()

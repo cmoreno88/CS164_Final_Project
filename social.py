@@ -7,6 +7,12 @@ usrnm = raw_input("Welcome to Social. Please enter your username: ")
 pwd = getpass("Please enter your PassWord: ")
 
 print(usrnm + pwd)
+
 if usrnm in users:
+	if users[usrnm] == pwd:
+		print("yes")
+	else:
+		print("no")
+		
 	
 	

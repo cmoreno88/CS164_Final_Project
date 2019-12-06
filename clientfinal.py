@@ -1,57 +1,79 @@
-#Socket client example in python
-import socket   #module for sockets
-import sys      #module for exit
-
-#create an AF_INET, STREAM socket (TCP)
-#Function socket.socket creates a socket and returns a socket
-#descriptor which can be used in other socket related functions
-#Address Family: AF_INET (this is IP ver. 4 or IPv4
-#Type: SOCK_STREAM (this means connection oriented TCP protocol)
-#from Tools.scripts.which import msg
-
-try:
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#for error handling of socket creation failure
-except socket.error as msg:
-    print('Failed to create socket. Error: ' + str(msg[0]) + ' , Error message : ' + msg[1])
-    sys.exit()
-print('Socket Created')
-
-host = '10.0.0.4' #'www.google.com'; #
-#host = 'en.wikipedia.org/wiki/Christopher';
-port = 80   #port to connect to ip address of remote host/system
-try:    #retrieves remote server host ip address and assigns it
-    remote_ip = socket.gethostbyname(host)
-
-except socket.gaierror: #could not resolve, cant return hostname
-    print('Hostname could not be resolved. Exiting')
-    sys.exit()
-
-print('IP address of ' + host + ' is ' + remote_ip)
-
-#Connect to remote server
-s.connect((remote_ip, port))
-print('Socket Connected to ' + host + ' on IP ' + remote_ip)
-###########COULDNT GET THIS TO WORK############################
-#send some data to remote server
-#http command to fetch the mainoage of website
-#message = "Get / HTTP/1.1\r\n\r\n"
-message = 'GET / HTTP/1.1\r\n\r\n'
+'''
+	udp socket client
+	Silver Moon
+	sender
+	https://www.binarytides.com/programming-udp-sockets-in-python/
+'''
+#originally UDP altered to implement RDT 3.0
+# https://www.programiz.com/python-programming/time
+# https://www.geeksforgeeks.org/time-functions-in-python-set-1-time-ctime-sleep/
+import socket	#for sockets
+import sys		#for exit
+# from check import ip_checksum
+# import time
+# import threading
+# use it in this way
+# https://www.bogotobogo.com/python/Multithread/python_multithreading_subclassing_Timer_Object.php
+# create dgram udp socket
 
 try:
-#Set the whole string
-	s.sendall(message)
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 except socket.error:
-#Send failed
-	print('Send Failed')
+	print 'Failed to create socket'
 	sys.exit()
 
-print('Message send successfully')
+# host = '10.0.0.4'
+host = 'localhost';
+port = 8888;
+# seqnum = 0  # sequence number
 
-#Now recieve data
-reply = s.recv(4096)
+msg = raw_input('Enter message to send : ')
+# chks = str(ip_checksum(msg))					#convert checksum return value to string
+# changed the following for final lab
+# data = (str(seqnum) + chks + msg)
+# s.sendto(data, (host, port))
+s.sendto(msg, (host, port))
 
-print(reply)
-####################################################
-s.close()
+while(1) :
+	msg = raw_input('Enter message to send : ')
 
+	#chks = str(ip_checksum(msg))					#convert checksum return value to string
+	#data = (str(seqnum) + chks + msg)				#all 3 values are strings and merged together
+	try :
+		# Set the whole string
+		# s.sendto(msg, (host, port))
+		# s.sendto(data, (host, port))
+		s.sendto(msg, (host,port))
+
+		# receive data from client (data, addr)
+		d = s.recvfrom(1024)
+		reply = d[0]
+		addr = d[1]
+		# acknum = reply[0]								#we are recieving the acknowledge number
+		# rchks = reply[1:3]
+		# compchks = str(ip_checksum(reply[3:]))
+		#check for ack, receive data from client (data, addr)
+		"""
+		if not data: 
+			break
+		elif (str(seqnum) == acknum) and (rchks == compchks):		# verify seqnum/acknum and seqnum If good flip values
+			newdata = 'clientAck and Sum Good'
+			if seqnum == 0:
+				seqnum = 1
+			else:
+				seqnum = 0
+			# MAY need to move this assignment
+			reply = (str(seqnum) + str(ip_checksum(newdata)) + newdata)
+			#s.sendto(reply, (host, port))
+			print 'Server reply : ' + newdata
+		else:
+			print 'clientAck and Sum Bad'
+			reply = (str(seqnum) + chks + msg)
+			#s.sendto(reply, (host, port))
+			print 'Server reply : ' + msg
+		s.sendto(reply, (host, port))
+		"""
+		print'Server reply : ' + reply
+	except socket.error, msg:
+		print 'Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
+		sys.exit()
