@@ -8,8 +8,43 @@ import socket
 import sys
 from check import ip_checksum
 import time
-import social
+from getpass import getpass
+"""
+def usrmenu():
+	menu = {}
+	menu['1'] = "1. LogOut" 
+	menu['2'] = "2. Change Password"
+	# menu['3'] = "Send Message"
+	while True: 
+	  options = menu.keys()
+	  options.sort()
+	
+	  for entry in options: 
+		  print menu[entry]
+		  
+	  selection = raw_input("Please Select an Option number:")
+	  if selection == '1':
+		  print "logout" 
+		  break
+	  elif selection == '2':
+		  print "change pwd"
+	  else:
+		  print "Unknown Option Selected!" 
+	
 
+def logon():	
+	usrnm = raw_input("Welcome to Social. Please enter your username: ")
+	pwd = getpass("Please enter your PassWord: ")
+
+	print(usrnm + pwd)
+
+	if usrnm in users:
+		if users[usrnm] == pwd:
+			print("welcome")
+			usrmenu()
+		else:
+			print("no")
+"""
 HOST = ''	# Symbolic name meaning all available interfaces
 PORT = 8888	# Arbitrary non-privileged port
 # acknum = 0	# Created for acknowledgement number
@@ -30,13 +65,12 @@ try:
 except socket.error , msg:
 	print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
 	sys.exit()
-	
 print 'Socket bind complete'
 
 #now keep talking with the client
 while 1:
 #	print 'loop check'						# receive data from client (data, addr)
-	d = s.recvfrom(1024)		# Need to pull the seqnum and the checksum value
+	d = s.recvfrom(1024)					# Need to pull the seqnum and the checksum value
 	data = d[0]
 	addr = d[1]
 	# seqnum = data[0]
@@ -45,7 +79,12 @@ while 1:
 	
 	if not data: 
 		break
-	# elif (seqnum == str(acknum)) and (chks == rchks):		#verify seqnum/acknum and seqnum If good flip values
+	elif data in users:
+		tmpuser = data
+	else:
+		print("no")
+			 	
+	#elif (seqnum == str(acknum)) and (chks == rchks):		#verify seqnum/acknum and seqnum If good flip values
 	#	data = 'serverAck and Sum Good'
 	#	reply = (str(acknum) + str(ip_checksum(data)) + data)
 	#	if acknum == 0:
@@ -55,7 +94,7 @@ while 1:
 	#else:
 	#	data = 'serverAck and Sum Bad'
 	#	reply = (str(acknum) + str(ip_checksum(data)) + data)
-	reply = 'ok...' + data
+ 
 	s.sendto(reply , addr)
 	# MAY need to move this assignment
 	print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + data.strip()
