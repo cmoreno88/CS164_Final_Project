@@ -8,6 +8,7 @@ import socket
 import sys
 from check import ip_checksum
 import time
+import social
 
 HOST = ''	# Symbolic name meaning all available interfaces
 PORT = 8888	# Arbitrary non-privileged port

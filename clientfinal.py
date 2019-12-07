@@ -27,14 +27,17 @@ host = 'localhost';
 port = 8888;
 # seqnum = 0  # sequence number
 
-msg = raw_input('Enter message to send : ')
+
+
+# msg = raw_input('Enter message to send : ')
 # chks = str(ip_checksum(msg))					#convert checksum return value to string
 # changed the following for final lab
 # data = (str(seqnum) + chks + msg)
 # s.sendto(data, (host, port))
-s.sendto(msg, (host, port))
+# s.sendto(msg, (host, port))
 
 while(1) :
+	msg = 'Request menu'
 	msg = raw_input('Enter message to send : ')
 
 	#chks = str(ip_checksum(msg))					#convert checksum return value to string
