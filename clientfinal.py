@@ -31,7 +31,7 @@ port = 8888;
 
 
 rsp = raw_input("Welcome to Social. Please enter your username: ")
-rflg = "1"
+rflg = "8"
 reply = rflg + rsp
 s.sendto(reply, (host, port))
 
@@ -46,27 +46,29 @@ while 1:
 		rflg = data[0]			# response flag
 	 	rsp = data[1:]			# response from the SERVER
 		print rsp
-		if rflg == "1":				# if the flag is 1 then we know that we have to ask for password		
+		if rflg == "6":				# if the flag is 1 then we know that we have to ask for password		
 			print rsp
 			rsp = getpass()
 			reply = rflg + rsp
-			if raw_input("please press c to continue") == "c":
-				s.sendto(reply, (host, port))
-		elif rflg == "2":
+			# if raw_input("please press c to continue") == "c":
+			#	s.sendto(reply, (host, port))
+			s.sendto(reply, (host, port))
+		elif rflg == "7":
 			print rsp			# this is where the menu would be passed
 			reply = "Here is my menu choice"
-			if raw_input("please press c to continue") == "c":
-				s.sendto(reply, (host, port))
+			# if raw_input("please press c to continue") == "c":
+			#	s.sendto(reply, (host, port))
+			s.sendto(reply, (host, port))
 		else:
 			print rsp
 			rsp = "Goodbye From Client"
 			reply = rflg + rsp
 			if raw_input("please press c to continue") == "c":
 				s.sendto(reply, (host, port))
-		# s.sendto(reply, (host, port))
-		print'Server reply : '  + data
+			#s.sendto(reply, (host, port))
+		print'Server reply : '  + rsp # data
 	
-	# Handle exceptions
+# Handle exceptions #############################################
 	except socket.error, msg:
 		print 'Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
 		sys.exit()

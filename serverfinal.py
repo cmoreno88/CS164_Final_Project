@@ -49,6 +49,7 @@ HOST = ''	# Symbolic name meaning all available interfaces
 PORT = 8888	# Arbitrary non-privileged port
 # acknum = 0	# Created for acknowledgement number
 users = dict({'ryan':'bently','christopher':'charlie','marcus':'shakes','jacob':'chopper'})
+clients = dict()	# address dict for the clients
 
 # Datagram (udp) socket
 try :
@@ -68,6 +69,7 @@ except socket.error , msg:
 print 'Socket bind complete'
 ######################################################
 
+
 #now keep talking with the client
 while 1:
 #	print 'loop check'						# receive data from client (data, addr)
@@ -76,24 +78,30 @@ while 1:
 	addr = d[1]
 	rflg = data[0]						# reponse flag
 	rsp = data[1:]						# response from the CLIENT
-	print rsp
+	# print rsp
 	if not data: 
 		print 'break'
 		break
 	elif rsp in users.keys():
 		print 'exist'
-		rflg = "1"
+		curruser = rsp					# keep track of the current user
+		clients.update(rsp:addr)
+		rflg = "6"
 		rsp = "Please Enter Password: "
 		reply = rflg + rsp
-		if raw_input("please press c to continue") == "c":
-			s.sendto(reply , addr)
+		s.sendto(reply , addr)
 	elif rsp in users.values():
 		print 'good pass'
 		rsp = "welcome to Social!"
-		rflg = "2"
+		rflg = "7"
 		reply = rflg + rsp
-		if raw_input("please press c to continue") == "c":
-			s.sendto(reply , addr)
+		s.sendto(reply , addr)
+	elif rflg == "1":			# This option sends messages
+		# put a nested if in here to check if the message should go to 
+		# another user or be broadcast?
+		rsp = "Please enter message: "
+		reply = rflg + rsp
+		s.sendto(reply , addr)
 	else:
 		print 'server else'
 		rsp = "Goodbye from Server"
@@ -101,10 +109,11 @@ while 1:
 		reply = rflg + rsp
 		if raw_input("please press c to continue") == "c":
 			s.sendto(reply , addr)
-		# break
 	# s.sendto(reply , addr)
 	
 	# MAY need to move this assignment
-	print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + data.strip()
+	# create an other dictionary that associates the USERNAME that connected
+	# With the addr
+	print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + rsp # data.strip()
 	#########################################################
 s.close()
