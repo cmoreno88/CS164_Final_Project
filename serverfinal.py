@@ -57,7 +57,7 @@ try :
 except socket.error, msg :
 	print 'Failed to create socket. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
 	sys.exit()
-
+##########################################################
 
 # Bind socket to local host and port
 try:
@@ -66,6 +66,7 @@ except socket.error , msg:
 	print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
 	sys.exit()
 print 'Socket bind complete'
+######################################################
 
 #now keep talking with the client
 while 1:
@@ -73,30 +74,37 @@ while 1:
 	d = s.recvfrom(1024)					# Need to pull the seqnum and the checksum value
 	data = d[0]
 	addr = d[1]
-	# seqnum = data[0]
-	# chks = data[1:3]
-	# rchks = str(ip_checksum(data[3:]))
-	
+	rflg = data[0]						# reponse flag
+	rsp = data[1:]						# response from the CLIENT
+	print rsp
 	if not data: 
+		print 'break'
 		break
-	elif data in users:
-		tmpuser = data
+	elif rsp in users.keys():
+		print 'exist'
+		rflg = "1"
+		rsp = "Please Enter Password: "
+		reply = rflg + rsp
+		if raw_input("please press c to continue") == "c":
+			s.sendto(reply , addr)
+	elif rsp in users.values():
+		print 'good pass'
+		rsp = "welcome to Social!"
+		rflg = "2"
+		reply = rflg + rsp
+		if raw_input("please press c to continue") == "c":
+			s.sendto(reply , addr)
 	else:
-		print("no")
-			 	
-	#elif (seqnum == str(acknum)) and (chks == rchks):		#verify seqnum/acknum and seqnum If good flip values
-	#	data = 'serverAck and Sum Good'
-	#	reply = (str(acknum) + str(ip_checksum(data)) + data)
-	#	if acknum == 0:
-	#		acknum = 1
-	#	else:
-	#		acknum = 0
-	#else:
-	#	data = 'serverAck and Sum Bad'
-	#	reply = (str(acknum) + str(ip_checksum(data)) + data)
- 
-	s.sendto(reply , addr)
+		print 'server else'
+		rsp = "Goodbye from Server"
+		rflg = "0"
+		reply = rflg + rsp
+		if raw_input("please press c to continue") == "c":
+			s.sendto(reply , addr)
+		# break
+	# s.sendto(reply , addr)
+	
 	# MAY need to move this assignment
 	print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + data.strip()
-	
+	#########################################################
 s.close()
