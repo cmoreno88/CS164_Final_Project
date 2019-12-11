@@ -59,6 +59,7 @@ while 1:
 			# if raw_input("please press c to continue") == "c":
 			#	s.sendto(reply, (host, port))
 			s.sendto(reply, (host, port))
+		elif rflg == "1":
 		else:
 			print rsp
 			rsp = "Goodbye From Client"
