@@ -50,6 +50,7 @@ PORT = 8888	# Arbitrary non-privileged port
 # acknum = 0	# Created for acknowledgement number
 users = dict({'ryan':'bently','christopher':'charlie','marcus':'shakes','jacob':'chopper'})
 clients = dict()	# address dict for the clients
+clientlist = []		# list to broadcast to all
 
 # Datagram (udp) socket
 try :
@@ -84,8 +85,8 @@ while 1:
 		break
 	elif rsp in users.keys():
 		print 'exist'
-		curruser = rsp					# keep track of the current user
-		clients.update(rsp:addr)
+		curruser = rsp				# keep track of the current user
+		clients.update(rsp = addr)	# ADDS user & addr to client list
 		rflg = "6"
 		rsp = "Please Enter Password: "
 		reply = rflg + rsp
@@ -93,12 +94,13 @@ while 1:
 	elif rsp in users.values():
 		print 'good pass'
 		rsp = "welcome to Social!"
-		rflg = "7"
+		rflg = "1"		# setting the flag to 1 enters messenger
 		reply = rflg + rsp
 		s.sendto(reply , addr)
 	elif rflg == "1":			# This option sends messages
 		# put a nested if in here to check if the message should go to 
 		# another user or be broadcast?
+		print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + rsp # data.strip()
 		rsp = "Please enter message: "
 		reply = rflg + rsp
 		s.sendto(reply , addr)
@@ -114,6 +116,6 @@ while 1:
 	# MAY need to move this assignment
 	# create an other dictionary that associates the USERNAME that connected
 	# With the addr
-	print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + rsp # data.strip()
+#	print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + rsp # data.strip()
 	#########################################################
 s.close()

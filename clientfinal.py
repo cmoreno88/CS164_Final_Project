@@ -45,7 +45,7 @@ while 1:
 		addr = d[1]
 		rflg = data[0]			# response flag
 	 	rsp = data[1:]			# response from the SERVER
-		print rsp
+		# print rsp
 		if rflg == "6":				# if the flag is 1 then we know that we have to ask for password		
 			print rsp
 			rsp = getpass()
@@ -60,6 +60,10 @@ while 1:
 			#	s.sendto(reply, (host, port))
 			s.sendto(reply, (host, port))
 		elif rflg == "1":
+			print'Server reply : '  + rsp
+			rsp = raw_input("Enter message to send: ")
+			reply = rflg + rsp
+			s.sendto(reply, (host, port))
 		else:
 			print rsp
 			rsp = "Goodbye From Client"
@@ -67,7 +71,7 @@ while 1:
 			if raw_input("please press c to continue") == "c":
 				s.sendto(reply, (host, port))
 			#s.sendto(reply, (host, port))
-		print'Server reply : '  + rsp # data
+		# print'Server reply : '  + rsp # data
 	
 # Handle exceptions #############################################
 	except socket.error, msg:
